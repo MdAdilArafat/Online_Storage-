@@ -27,7 +27,9 @@ router.post('/register',
         email,
         password :hashedPassword 
     })
-    res.json(newUser)
+    const token = jwt.sign({email:email},process.env.SECRET_KEY)
+    res.cookie('token',token)
+    res.redirect('/home')
 })
 router.get('/login',(req,res)=>{
     res.render('login')
@@ -50,23 +52,23 @@ router.post('/login',
     if(!user){
         return res.status(400).json({
             message: 'incorect username and password'
-        })
+        }) 
     }
     const isMatch = await bcrypt.compare(password,user.password)
     if(!isMatch){
         return res.status(400).json({
             message:"incorect username and password"
-        })
+        }) 
     }
     const token = jwt.sign({
-        userId:user._id,
+        userId:user._id, 
         email:user.email,
-        username:user.username
+        username:user.username 
     },
     process.env.SECRET_KEY
 )
     res.cookie('token',token)
-    res.json({message:'loged in..'})
+    res.redirect('/home')
 
 })
-module.exports= router
+module.exports= router 

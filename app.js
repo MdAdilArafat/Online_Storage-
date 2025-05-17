@@ -8,14 +8,17 @@ connectiontoDB()
 const cookie_parser = require('cookie-parser')
 const indexRouter = require('./routes/index.router')
 
+
 app.set('view engine','ejs')
 app.use(express.json())
 app.use(cookie_parser())
 app.use(express.urlencoded({extended:true}))
 
 
+
+
 app.use('/',indexRouter)
-app.use('/user',userRouter)
+app.use('/user',userRouter) 
 
 
 // app.get('/',(req,res) =>{
